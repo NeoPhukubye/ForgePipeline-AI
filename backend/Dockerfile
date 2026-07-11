@@ -1,20 +1,19 @@
-# Use an official, lightweight Python layer
+# Use an official, lightweight Python runtime as a parent image
 FROM python:3.11-slim
 
-# Set working directory inside the container
-WORKDIR /workspace
+# Set the working directory inside the container
+WORKDIR /app
 
-# Copy dependencies first to maximize build caching
-COPY requirements.txt .
-
-# Install dependencies
+# Copy only the backend requirements and install dependencies
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application source code into the workspace
-COPY ./app ./app
+# Copy the backend application code
+COPY backend/app /app/app
 
-# Expose the internal port that Uvicorn runs on
-EXPOSE 8000
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
 
-# Specify the launch command, navigating into the app execution path
-CMD ["python", "app/main.py"]
+# Run the FastAPI application using uvicorn
+# The command should be 'uvicorn app.main:app --host 0.0.0.0 --port 8080'
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
