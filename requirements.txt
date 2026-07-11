@@ -1,0 +1,6 @@
+# For Cloud Interaction (e.g., AWS)
+boto3
+# For Containerization
+docker
+# For CLI
+typer[all]

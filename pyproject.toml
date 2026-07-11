@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forgepipeline-ai"
+version = "0.0.1"
+authors = [
+  { name="Your Name", email="you@example.com" },
+]
+description = "An agentic cloud application that automates Docker containerization and cloud deployment workflows."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file="LICENSE" }
+
+[project.scripts]
+forgepipeline = "forgepipeline_ai.cli:app"
