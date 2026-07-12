@@ -94,7 +94,7 @@ class ExecutionEngine:
         print(f"      -> Building Docker image: {self.image_name}")
         try:
             subprocess.run(
-                ["docker", "build", "-t", self.image_name, "."],
+                ["sudo", "docker", "build", "-t", self.image_name, "."],
                 cwd=self.repo_path,
                 check=True,
                 capture_output=True,
