@@ -6,4 +6,11 @@ class PlanningAgent:
         """Analyzes user intent and generates a step-by-step deployment plan."""
         print(f"🤖 Planning agent received intent: {intent}")
         # In a real implementation, this would involve LLM calls or rule-based logic.
-        return [{"step": "clone_repo"}, {"step": "analyze_code"}, {"step": "deploy"}]
+        return [
+            {"step": "clone_repo"},
+            {"step": "analyze_code"},
+            {"step": "generate_dockerfile"},
+            {"step": "build_image"},
+            {"step": "push_image"},
+            {"step": "deploy"},
+        ]
