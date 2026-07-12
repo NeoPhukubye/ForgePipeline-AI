@@ -1,26 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
 @import "tailwindcss";
 
-/* THESE ARE PLACEHOLDER FOR EMPTY APP, FEEL FREE TO REPLACE WITH DESIRED DESIGN */
-
 @theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --color-text-muted: oklch(0.9015 0.0154 241.79);
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --color-primary: oklch(0.62 0.19 262.88);
+  --color-on-primary: oklch(1.0 0 0);
+  --color-secondary: oklch(0.52 0.13 262.88);
+  --color-accent: oklch(0.62 0.13 163.23);
+  --color-background: oklch(0.13 0.01 250);
+  --color-foreground: oklch(0.93 0.01 250);
+  --color-surface: oklch(0.17 0.012 250);
+  --color-muted: oklch(0.19 0.015 250);
+  --color-border: oklch(0.27 0.02 250);
+  --color-destructive: oklch(0.58 0.2 27);
+  --color-ring: oklch(0.62 0.19 262.88);
 }
 
-.bg-dotgrid-glow {
-  background-color: oklch(0.1638 0 0);
+/* Smooth base */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+/* Subtle dot grid background for specific sections */
+.bg-grid {
   background-image:
-    radial-gradient(
-      circle at 50% 118%,
-      oklch(0.41 0.14 250 / 45%) 0%,
-      oklch(0.41 0.14 250 / 22%) 22%,
-      oklch(0.41 0.14 250 / 10%) 32%,
-      oklch(0.41 0.14 250 / 4%) 38%,
-      transparent 45%
-    ),
-    radial-gradient(oklch(0.41 0.14 250 / 4%) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    16px 16px;
-  background-position: center, center;
+    radial-gradient(oklch(0.93 0.01 250 / 4%) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Glow effect for hero */
+.glow-primary {
+  position: relative;
+}
+.glow-primary::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, oklch(0.62 0.19 262.88 / 12%), transparent 70%);
+  pointer-events: none;
+}
+
+/* Card hover lift */
+.card-hover {
+  transition: all 200ms ease-out;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px oklch(0 0 0 / 25%);
+}
+
+/* Terminal-like log view */
+.terminal-text {
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Fira Code", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* Status dots */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.status-dot.running { background-color: oklch(0.72 0.15 220); }
+.status-dot.completed { background-color: oklch(0.62 0.13 163.23); }
+.status-dot.failed { background-color: oklch(0.58 0.2 27); }
+.status-dot.pending { background-color: oklch(0.6 0.03 250); }
+
+/* Custom scrollbar for log viewer */
+.log-viewer::-webkit-scrollbar {
+  width: 6px;
+}
+.log-viewer::-webkit-scrollbar-track {
+  background: oklch(0.15 0.01 250);
+}
+.log-viewer::-webkit-scrollbar-thumb {
+  background: oklch(0.3 0.02 250);
+  border-radius: 3px;
+}
+
+/* Button styles */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  transition: all 150ms ease-out;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+}
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background-color: transparent;
+  color: var(--color-foreground);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  transition: all 150ms ease-out;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background-color: var(--color-muted);
+}
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+/* Input base */
+.input-field {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  background: oklch(0.15 0.01 250);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  color: var(--color-foreground);
+  font-size: 0.875rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  outline: none;
+}
+.input-field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px oklch(0.62 0.19 262.88 / 20%);
+}
+.input-field::placeholder {
+  color: oklch(0.5 0.02 250);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
