@@ -13,4 +13,5 @@ class PlanningAgent:
             {"step": "build_image"},
             {"step": "push_image"},
             {"step": "deploy"},
+            {"step": "cleanup"},
         ]

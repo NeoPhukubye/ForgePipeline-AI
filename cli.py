@@ -31,7 +31,7 @@ def deploy(
 
     # 3. Execute Plan
     engine = ExecutionEngine()
-    engine.execute_plan(plan)
+    engine.execute_plan(plan, intent)
 
     # 4. Show Best Practices
     kb = KnowledgeBase()
