@@ -13,7 +13,8 @@ app = typer.Typer(help="ForgePipeline AI: An agentic cloud deployment tool.")
 def deploy(
     repo: Annotated[str, typer.Option(help="URL of the source code repository.")],
     target: Annotated[str, typer.Option(help="Cloud target for deployment (e.g., aws-ecs, gcp-run).")],
-    env: Annotated[str, typer.Option(help="Deployment environment (e.g., staging, production).")]
+    env: Annotated[str, typer.Option(help="Deployment environment (e.g., staging, production).")],
+    no_docker: Annotated[bool, typer.Option(help="Skip Docker-related steps (build, push).")] = False
 ):
     """
     Analyze a repository and deploy it to a specified cloud target.
@@ -24,6 +25,7 @@ def deploy(
     # 1. Parse Intent
     parser = IntentParser()
     intent = parser.parse(repo=repo, target=target, env=env)
+    intent["no_docker"] = no_docker
 
     # 2. Create Plan
     planner = PlanningAgent()
