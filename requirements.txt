@@ -1,6 +1,8 @@
-# For Cloud Interaction (e.g., AWS)
-boto3
-# For Containerization
-docker
-# For CLI
-typer[all]
+# Core
+typer[all]>=0.12.0
+# Cloud providers
+boto3>=1.34.0
+# Docker SDK
+docker>=7.0.0
+# HTTP
+httpx>=0.27.0
