@@ -1,9 +1,7 @@
-# Web framework for creating your agent API endpoints
+# Web framework
 fastapi>=0.110.0
-uvicorn>=0.28.0
-
-# HTTP client for your agents to fetch data/interact with APIs
-requests>=2.31.0
-
-# Environment variable management for API keys
+uvicorn[standard]>=0.28.0
+# Validation
+pydantic>=2.6.0
+# Environment
 python-dotenv>=1.0.1

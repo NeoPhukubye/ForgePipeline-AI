@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Save, Key, Globe, Bell, Shield } from "lucide-react";
+import { Save, Key, Globe, Bell } from "lucide-react";
 
 export default function Settings() {
   const [saved, setSaved] = useState(false);
