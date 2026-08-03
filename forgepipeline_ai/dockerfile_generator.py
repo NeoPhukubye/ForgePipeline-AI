@@ -72,7 +72,7 @@ class DockerfileGenerator:
             "USER app",
             f"EXPOSE {a.port or 8000}",
             "",
-            f'CMD ["{self._shell_to_cmd(start_cmd)[0]}", {", ".join(f\'"{x}\'' for x in self._shell_to_cmd(start_cmd)[1:])}]',
+            f"CMD {self._to_cmd_array(start_cmd)}",
         ]
 
         return "\n".join(lines) + "\n"
