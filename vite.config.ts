@@ -36,5 +36,11 @@ export default defineConfig(() => ({
   server: {
     allowedHosts: true as const,
     hmr: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+    },
   },
 }))
