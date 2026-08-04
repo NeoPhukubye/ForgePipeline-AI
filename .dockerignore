@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+*.log
+__pycache__
+*.pyc
+*.egg-info
+.env
+.venv
+venv
+forge_pipeline.db
+.DS_Store
