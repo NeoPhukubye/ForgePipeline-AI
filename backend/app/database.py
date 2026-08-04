@@ -84,4 +84,28 @@ def init_db():
                 pushed_at TEXT,
                 created_at TEXT DEFAULT (datetime('now'))
             );
+
+            CREATE TABLE IF NOT EXISTS users (
+                id TEXT PRIMARY KEY,
+                username TEXT NOT NULL UNIQUE,
+                email TEXT NOT NULL UNIQUE,
+                role TEXT NOT NULL DEFAULT 'developer' CHECK (role IN ('admin', 'developer', 'viewer')),
+                is_active INTEGER NOT NULL DEFAULT 1,
+                created_at TEXT DEFAULT (datetime('now')),
+                updated_at TEXT DEFAULT (datetime('now'))
+            );
+
+            CREATE TABLE IF NOT EXISTS deployments (
+                id TEXT PRIMARY KEY,
+                project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+                task_id TEXT REFERENCES tasks(id),
+                environment TEXT NOT NULL DEFAULT 'staging',
+                cloud_provider TEXT,
+                region TEXT,
+                status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'IN_PROGRESS', 'LIVE', 'ROLLED_BACK', 'FAILED')),
+                deployed_by TEXT REFERENCES users(id),
+                deployed_at TEXT,
+                url TEXT,
+                created_at TEXT DEFAULT (datetime('now'))
+            );
         """)
