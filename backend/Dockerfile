@@ -1,20 +1,22 @@
-# Use an official, lightweight Python runtime as a parent image
-FROM python:3.11-slim
+FROM python:3.12-slim
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy only the backend requirements and install dependencies
-COPY backend/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git curl docker.io \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the backend application code
+# Install Python dependencies
+COPY backend/requirements.txt /app/requirements.txt
+COPY requirements.txt /app/agent-requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -r agent-requirements.txt
+
+# Copy agent layer
+COPY forgepipeline_ai /app/forgepipeline_ai
+
+# Copy backend
 COPY backend/app /app/app
 
-# Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# Run the FastAPI application using uvicorn
-# The command should be 'uvicorn app.main:app --host 0.0.0.0 --port 8080'
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
-# The existing COPY commands are correct if the build context is the project root.
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
