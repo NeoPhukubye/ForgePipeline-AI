@@ -97,6 +97,65 @@ class ContainerResponse(BaseModel):
     created_at: str
 
 
+# --- Users ---
+
+class UserRole(str, Enum):
+    ADMIN = "admin"
+    DEVELOPER = "developer"
+    VIEWER = "viewer"
+
+
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    role: UserRole = UserRole.DEVELOPER
+
+
+class UserResponse(BaseModel):
+    id: str
+    username: str
+    email: str
+    role: UserRole
+    is_active: bool
+    created_at: str
+    updated_at: str
+
+
+# --- Deployments ---
+
+class DeploymentStatus(str, Enum):
+    PENDING = "PENDING"
+    IN_PROGRESS = "IN_PROGRESS"
+    LIVE = "LIVE"
+    ROLLED_BACK = "ROLLED_BACK"
+    FAILED = "FAILED"
+
+
+class DeploymentResponse(BaseModel):
+    id: str
+    project_id: str
+    task_id: Optional[str]
+    environment: str
+    cloud_provider: Optional[str]
+    region: Optional[str]
+    status: DeploymentStatus
+    deployed_by: Optional[str]
+    deployed_at: Optional[str]
+    url: Optional[str]
+    created_at: str
+
+
+# --- Artifacts ---
+
+class ArtifactResponse(BaseModel):
+    id: int
+    task_id: str
+    artifact_type: str
+    key: str
+    value: str
+    created_at: str
+
+
 # --- Dashboard ---
 
 class DashboardStats(BaseModel):
