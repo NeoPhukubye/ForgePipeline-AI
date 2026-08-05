@@ -66,7 +66,7 @@ class TestDryRun:
 class TestErrorRecovery:
     def test_skip_step_on_failed_dependency(self):
         engine = ExecutionEngine(dry_run=True)
-        step1 = PlanStep(name="s1", description="Step 1", handler="nonexistent")
+        step1 = PlanStep(name="s1", description="Step 1", handler="nonexistent", required=False)
         step2 = PlanStep(name="s2", description="Step 2", handler="cleanup", depends_on=["s1"])
         plan = DeploymentPlan(steps=[step1, step2])
         engine.execute_plan(plan, {})
