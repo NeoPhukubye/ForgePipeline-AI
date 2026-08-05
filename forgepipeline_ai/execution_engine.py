@@ -169,10 +169,31 @@ class ExecutionEngine:
 
     # --- Step Handlers ---
 
+    @staticmethod
+    def _validate_repo_url(url: str) -> bool:
+        """Reject URLs that could be used for command injection or local file access."""
+        if not url:
+            return False
+        url_stripped = url.strip()
+        if url_stripped.startswith("-"):
+            return False
+        if any(c in url_stripped for c in [";", "|", "&", "$", "`", "\n", "\r"]):
+            return False
+        import re
+        valid = (
+            re.match(r"^https?://[\w.\-/~@:]+$", url_stripped)
+            or re.match(r"^git@[\w.\-]+:[\w.\-/]+$", url_stripped)
+            or re.match(r"^[\w.\-/\\]+$", url_stripped)
+        )
+        return bool(valid)
+
     def _handle_clone_repo(self, step: PlanStep, intent: dict):
         repo_url = intent.get("source_repo") or step.context.get("repo_url")
         if not repo_url:
             raise ExecutionError(step.name, "No source repository URL provided", recoverable=False)
+
+        if not self._validate_repo_url(repo_url):
+            raise ExecutionError(step.name, f"Invalid or unsafe repository URL: {repo_url}", recoverable=False)
 
         self.context.repo_path = tempfile.mkdtemp(prefix="forge_")
         try:
