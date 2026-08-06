@@ -4,11 +4,12 @@ import sqlite3
 import os
 from contextlib import contextmanager
 
-DB_PATH = os.environ.get("FORGE_DB_PATH", "forge_pipeline.db")
+def _db_path() -> str:
+    return os.environ.get("FORGE_DB_PATH", "forge_pipeline.db")
 
 
 def get_connection() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(_db_path())
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
