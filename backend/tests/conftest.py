@@ -1,21 +1,17 @@
 """Test fixtures for the FastAPI backend."""
 
 import os
-import tempfile
 
 import pytest
 from fastapi.testclient import TestClient
-
-os.environ["FORGE_DB_PATH"] = ":memory:"
-
-from backend.app.main import app
-from backend.app.database import init_db, get_db
 
 
 @pytest.fixture(autouse=True)
 def reset_db(tmp_path):
     db_path = str(tmp_path / "test.db")
     os.environ["FORGE_DB_PATH"] = db_path
+
+    from backend.app.database import init_db
     init_db()
     yield
     if os.path.exists(db_path):
@@ -24,6 +20,7 @@ def reset_db(tmp_path):
 
 @pytest.fixture
 def client():
+    from backend.app.main import app
     return TestClient(app)
 
 

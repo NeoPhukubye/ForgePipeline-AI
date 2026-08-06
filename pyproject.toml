@@ -41,5 +41,5 @@ line-length = 120
 select = ["E", "F", "I", "N", "W"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "backend/tests"]
 asyncio_mode = "auto"
