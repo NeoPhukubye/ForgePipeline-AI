@@ -1,7 +1,8 @@
 """Artifacts router - browse pipeline artifacts."""
 
-from fastapi import APIRouter, HTTPException
 from typing import Optional
+
+from fastapi import APIRouter, HTTPException
 
 from ..database import get_db
 from ..models.schemas import ArtifactResponse

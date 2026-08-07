@@ -1,8 +1,9 @@
 """Database setup using SQLite for local development."""
 
-import sqlite3
 import os
+import sqlite3
 from contextlib import contextmanager
+
 
 def _db_path() -> str:
     return os.environ.get("FORGE_DB_PATH", "forge_pipeline.db")

@@ -1,12 +1,10 @@
 """Tests for the code analyzer module."""
 
 import json
-import os
-import tempfile
 
 import pytest
 
-from forgepipeline_ai.analyzer import AnalysisResult, CodeAnalyzer
+from forgepipeline_ai.analyzer import CodeAnalyzer
 
 
 @pytest.fixture

@@ -2,12 +2,13 @@
 
 import os
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import init_db
 from .middleware import api_key_middleware
-from .routers import projects, tasks, containers, users, deployments, artifacts
+from .routers import artifacts, containers, deployments, projects, tasks, users
 
 CORS_ORIGINS = os.environ.get(
     "FORGE_CORS_ORIGINS",

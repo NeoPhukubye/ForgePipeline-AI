@@ -1,8 +1,7 @@
 """Tests for the execution engine module."""
 
-import pytest
 
-from forgepipeline_ai.execution_engine import ExecutionEngine, ExecutionError
+from forgepipeline_ai.execution_engine import ExecutionEngine
 from forgepipeline_ai.planning_agent import DeploymentPlan, PlanStep, StepStatus
 
 
@@ -48,7 +47,7 @@ class TestDryRun:
             PlanStep(name="clone_repo", description="Clone", handler="clone_repo", context={"repo_url": "https://github.com/user/app"}),
         ])
         intent = {"source_repo": "https://github.com/user/app"}
-        ctx = engine.execute_plan(plan, intent)
+        engine.execute_plan(plan, intent)
         assert plan.steps[0].status == StepStatus.COMPLETED
 
     def test_dry_run_build_image(self):
@@ -58,7 +57,7 @@ class TestDryRun:
             PlanStep(name="build_image", description="Build", handler="build_image"),
         ])
         intent = {"source_repo": "https://github.com/user/app", "environment": "staging"}
-        ctx = engine.execute_plan(plan, intent)
+        engine.execute_plan(plan, intent)
         assert plan.steps[0].status == StepStatus.COMPLETED
         assert engine.context.image_name == "app"
 

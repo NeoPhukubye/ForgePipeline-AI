@@ -3,8 +3,6 @@ CLI interface for ForgePipeline AI with rich output, progress tracking,
 and interactive confirmation for production deployments.
 """
 
-import sys
-import time
 from typing import Optional
 
 import typer
@@ -12,7 +10,7 @@ from typing_extensions import Annotated
 
 from .analyzer import CodeAnalyzer
 from .dockerfile_generator import DockerfileGenerator
-from .execution_engine import ExecutionContext, ExecutionEngine
+from .execution_engine import ExecutionEngine
 from .intent_parser import IntentParser
 from .knowledge_base import KnowledgeBase
 from .planning_agent import DeploymentPlan, PlanningAgent, PlanStep, StepStatus
@@ -43,7 +41,7 @@ def _print_plan(plan: DeploymentPlan):
 
 
 def _print_analysis(analysis):
-    typer.echo(f"\n  Analysis Results:")
+    typer.echo("\n  Analysis Results:")
     typer.echo(f"    Language:        {analysis.language}")
     if analysis.framework:
         typer.echo(f"    Framework:       {analysis.framework}")
@@ -88,7 +86,7 @@ def deploy(
     typer.echo(f"  Target:     {target}")
     typer.echo(f"  Environment:{env}")
     if dry_run:
-        typer.echo(f"  Mode:       DRY RUN")
+        typer.echo("  Mode:       DRY RUN")
 
     # Parse intent
     parser = IntentParser()
@@ -138,7 +136,7 @@ def deploy(
     kb = KnowledgeBase()
     practices = kb.get_best_practices(target)
     if practices:
-        typer.echo(f"\n  Recommendations:")
+        typer.echo("\n  Recommendations:")
         for p in practices[:5]:
             typer.echo(f"    • {p}")
 

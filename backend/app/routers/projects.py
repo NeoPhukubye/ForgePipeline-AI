@@ -1,6 +1,7 @@
 """Projects CRUD router."""
 
 import uuid
+
 from fastapi import APIRouter, HTTPException
 
 from ..database import get_db

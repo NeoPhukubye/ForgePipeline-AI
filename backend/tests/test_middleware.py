@@ -2,9 +2,6 @@
 
 import os
 
-import pytest
-from fastapi.testclient import TestClient
-
 
 def test_no_api_key_required_when_unset(client):
     os.environ.pop("FORGE_API_KEY", None)
@@ -15,7 +12,6 @@ def test_no_api_key_required_when_unset(client):
 def test_health_always_open(client):
     os.environ["FORGE_API_KEY"] = "test-secret"
     try:
-        from backend.app.middleware import API_KEY
         import backend.app.middleware as mw
         mw.API_KEY = "test-secret"
 

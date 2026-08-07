@@ -40,7 +40,7 @@ class DockerfileGenerator:
             "RUN addgroup --system app && adduser --system --ingroup app app",
             "",
             "# Install dependencies",
-            f"FROM base AS deps",
+            "FROM base AS deps",
         ]
 
         if a.package_manager == "poetry":

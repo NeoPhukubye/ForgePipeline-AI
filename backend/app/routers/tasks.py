@@ -1,21 +1,22 @@
 """Tasks and deployment pipeline router."""
 
-import uuid
+import os
+import sys
 import threading
 import time
-import sys
-import os
-from datetime import datetime
-from fastapi import APIRouter, HTTPException
+import uuid
 from typing import Optional
+
+from fastapi import APIRouter, HTTPException
 
 # Add parent project to path for forgepipeline_ai imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 from ..database import get_db
 from ..models.schemas import (
-    DeployRequest, AnalyzeRequest, TaskResponse, TaskLogResponse,
-    TaskStatus, TaskType, ContainerResponse,
+    DeployRequest,
+    TaskLogResponse,
+    TaskResponse,
 )
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
@@ -32,8 +33,9 @@ def _log(conn, task_id: str, level: str, message: str):
 def _run_pipeline(task_id: str, project_id: str, task_type: str, dry_run: bool):
     """Background thread that runs the ForgePipeline agent pipeline."""
     from forgepipeline_ai import (
-        CodeAnalyzer, DockerfileGenerator, IntentParser,
-        PlanningAgent, ExecutionEngine, KnowledgeBase,
+        ExecutionEngine,
+        IntentParser,
+        PlanningAgent,
     )
 
     with get_db() as conn:
