@@ -28,6 +28,7 @@ class LogLevel(str, Enum):
 
 # --- Projects ---
 
+
 class ProjectCreate(BaseModel):
     name: str
     source_repo_url: str
@@ -53,6 +54,7 @@ class ProjectResponse(BaseModel):
 
 # --- Tasks ---
 
+
 class TaskResponse(BaseModel):
     id: str
     project_id: str
@@ -75,6 +77,7 @@ class TaskLogResponse(BaseModel):
 
 # --- Deployments ---
 
+
 class DeployRequest(BaseModel):
     project_id: str
     task_type: TaskType = TaskType.DEPLOY
@@ -86,6 +89,7 @@ class AnalyzeRequest(BaseModel):
 
 
 # --- Containers ---
+
 
 class ContainerResponse(BaseModel):
     id: str
@@ -99,6 +103,7 @@ class ContainerResponse(BaseModel):
 
 
 # --- Users ---
+
 
 class UserRole(str, Enum):
     ADMIN = "admin"
@@ -124,6 +129,7 @@ class UserResponse(BaseModel):
 
 # --- Deployments ---
 
+
 class DeploymentStatus(str, Enum):
     PENDING = "PENDING"
     IN_PROGRESS = "IN_PROGRESS"
@@ -148,6 +154,7 @@ class DeploymentResponse(BaseModel):
 
 # --- Artifacts ---
 
+
 class ArtifactResponse(BaseModel):
     id: int
     task_id: str
@@ -158,6 +165,7 @@ class ArtifactResponse(BaseModel):
 
 
 # --- Dashboard ---
+
 
 class DashboardStats(BaseModel):
     total_projects: int

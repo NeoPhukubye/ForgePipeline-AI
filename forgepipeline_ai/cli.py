@@ -72,13 +72,22 @@ def _on_step_fail(step: PlanStep, error: Exception):
 @app.command()
 def deploy(
     repo: Annotated[str, typer.Option("--repo", "-r", help="Repository URL or local path.")],
-    target: Annotated[str, typer.Option(
-        "--target", "-t",
-        help="Cloud target (aws-ecs, gcp-run, kubernetes, azure, aws-lambda).",
-    )],
-    env: Annotated[str, typer.Option(
-        "--env", "-e", help="Environment (staging, production, development).",
-    )] = "staging",
+    target: Annotated[
+        str,
+        typer.Option(
+            "--target",
+            "-t",
+            help="Cloud target (aws-ecs, gcp-run, kubernetes, azure, aws-lambda).",
+        ),
+    ],
+    env: Annotated[
+        str,
+        typer.Option(
+            "--env",
+            "-e",
+            help="Environment (staging, production, development).",
+        ),
+    ] = "staging",
     dry_run: Annotated[bool, typer.Option("--dry-run", help="Simulate without executing.")] = False,
     no_docker: Annotated[bool, typer.Option("--no-docker", help="Skip Docker build/push steps.")] = False,
     registry: Annotated[Optional[str], typer.Option("--registry", help="Container registry URL.")] = None,
@@ -182,9 +191,14 @@ def analyze(
 @app.command()
 def generate(
     path: Annotated[str, typer.Argument(help="Path to repository or project directory.")] = ".",
-    output: Annotated[Optional[str], typer.Option(
-        "--output", "-o", help="Write Dockerfile to path (default: stdout).",
-    )] = None,
+    output: Annotated[
+        Optional[str],
+        typer.Option(
+            "--output",
+            "-o",
+            help="Write Dockerfile to path (default: stdout).",
+        ),
+    ] = None,
 ):
     """Generate a Dockerfile for the given project."""
     analyzer = CodeAnalyzer()

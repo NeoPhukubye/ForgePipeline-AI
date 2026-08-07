@@ -272,9 +272,17 @@ class CodeAnalyzer:
 
         top_ext = max(ext_counts, key=ext_counts.get)
         lang_map = {
-            ".py": "python", ".js": "javascript", ".ts": "typescript",
-            ".go": "go", ".rs": "rust", ".java": "java", ".rb": "ruby",
-            ".php": "php", ".cs": "csharp", ".cpp": "cpp", ".c": "c",
+            ".py": "python",
+            ".js": "javascript",
+            ".ts": "typescript",
+            ".go": "go",
+            ".rs": "rust",
+            ".java": "java",
+            ".rb": "ruby",
+            ".php": "php",
+            ".cs": "csharp",
+            ".cpp": "cpp",
+            ".c": "c",
         }
         result.language = lang_map.get(top_ext, "unknown")
 
@@ -330,9 +338,13 @@ class CodeAnalyzer:
                     line = line.strip()
                     if line and not line.startswith("#") and not line.startswith("-"):
                         pkg = (
-                            line.split("==")[0].split(">=")[0]
-                            .split("<=")[0].split("~=")[0]
-                            .split("[")[0].strip().lower()
+                            line.split("==")[0]
+                            .split(">=")[0]
+                            .split("<=")[0]
+                            .split("~=")[0]
+                            .split("[")[0]
+                            .strip()
+                            .lower()
                         )
                         if pkg:
                             deps.append(pkg)

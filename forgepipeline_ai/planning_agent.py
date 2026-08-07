@@ -82,59 +82,71 @@ class PlanningAgent:
         }
 
         # Always start with repo acquisition
-        plan.steps.append(PlanStep(
-            name="clone_repo",
-            description=f"Clone repository from {intent.get('source_repo', 'source')}",
-            handler="clone_repo",
-            context={"repo_url": intent.get("source_repo")},
-        ))
+        plan.steps.append(
+            PlanStep(
+                name="clone_repo",
+                description=f"Clone repository from {intent.get('source_repo', 'source')}",
+                handler="clone_repo",
+                context={"repo_url": intent.get("source_repo")},
+            )
+        )
 
         # Code analysis
-        plan.steps.append(PlanStep(
-            name="analyze_code",
-            description="Analyze codebase to detect language, framework, and dependencies",
-            handler="analyze_code",
-            depends_on=["clone_repo"],
-        ))
+        plan.steps.append(
+            PlanStep(
+                name="analyze_code",
+                description="Analyze codebase to detect language, framework, and dependencies",
+                handler="analyze_code",
+                depends_on=["clone_repo"],
+            )
+        )
 
         # Dockerfile generation (unless one exists or docker is skipped)
         if not intent.get("no_docker"):
             if analysis and analysis.has_dockerfile:
-                plan.steps.append(PlanStep(
-                    name="validate_dockerfile",
-                    description="Validate existing Dockerfile against best practices",
-                    handler="validate_dockerfile",
-                    depends_on=["analyze_code"],
-                    required=False,
-                ))
+                plan.steps.append(
+                    PlanStep(
+                        name="validate_dockerfile",
+                        description="Validate existing Dockerfile against best practices",
+                        handler="validate_dockerfile",
+                        depends_on=["analyze_code"],
+                        required=False,
+                    )
+                )
             else:
-                plan.steps.append(PlanStep(
-                    name="generate_dockerfile",
-                    description="Generate optimized Dockerfile based on analysis",
-                    handler="generate_dockerfile",
-                    depends_on=["analyze_code"],
-                ))
+                plan.steps.append(
+                    PlanStep(
+                        name="generate_dockerfile",
+                        description="Generate optimized Dockerfile based on analysis",
+                        handler="generate_dockerfile",
+                        depends_on=["analyze_code"],
+                    )
+                )
 
             # Build image
-            plan.steps.append(PlanStep(
-                name="build_image",
-                description="Build Docker image",
-                handler="build_image",
-                depends_on=(
-                    ["generate_dockerfile"]
-                    if not (analysis and analysis.has_dockerfile)
-                    else ["validate_dockerfile"]
-                ),
-                max_retries=1,
-            ))
+            plan.steps.append(
+                PlanStep(
+                    name="build_image",
+                    description="Build Docker image",
+                    handler="build_image",
+                    depends_on=(
+                        ["generate_dockerfile"]
+                        if not (analysis and analysis.has_dockerfile)
+                        else ["validate_dockerfile"]
+                    ),
+                    max_retries=1,
+                )
+            )
 
             # Push image to registry
-            plan.steps.append(PlanStep(
-                name="push_image",
-                description="Push image to container registry",
-                handler="push_image",
-                depends_on=["build_image"],
-            ))
+            plan.steps.append(
+                PlanStep(
+                    name="push_image",
+                    description="Push image to container registry",
+                    handler="push_image",
+                    depends_on=["build_image"],
+                )
+            )
 
         # Deploy based on target platform
         target = intent.get("target_platform", "")
@@ -144,22 +156,26 @@ class PlanningAgent:
             plan.steps.append(step)
 
         # Health check
-        plan.steps.append(PlanStep(
-            name="health_check",
-            description="Verify deployment health and connectivity",
-            handler="health_check",
-            depends_on=[deploy_steps[-1].name] if deploy_steps else ["analyze_code"],
-            required=False,
-        ))
+        plan.steps.append(
+            PlanStep(
+                name="health_check",
+                description="Verify deployment health and connectivity",
+                handler="health_check",
+                depends_on=[deploy_steps[-1].name] if deploy_steps else ["analyze_code"],
+                required=False,
+            )
+        )
 
         # Cleanup
-        plan.steps.append(PlanStep(
-            name="cleanup",
-            description="Clean up temporary files and resources",
-            handler="cleanup",
-            depends_on=["health_check"],
-            required=False,
-        ))
+        plan.steps.append(
+            PlanStep(
+                name="cleanup",
+                description="Clean up temporary files and resources",
+                handler="cleanup",
+                depends_on=["health_check"],
+                required=False,
+            )
+        )
 
         return plan
 

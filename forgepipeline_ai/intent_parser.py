@@ -49,8 +49,14 @@ ENV_ALIASES: dict[str, str] = {
 class IntentParser:
     """Parses structured CLI input or natural language into a DeploymentIntent."""
 
-    def parse(self, repo: str | None = None, target: str | None = None, env: str | None = None,
-              natural_language: str | None = None, **kwargs) -> dict:
+    def parse(
+        self,
+        repo: str | None = None,
+        target: str | None = None,
+        env: str | None = None,
+        natural_language: str | None = None,
+        **kwargs,
+    ) -> dict:
         if natural_language:
             return self._parse_natural(natural_language, **kwargs)
         return self._parse_structured(repo, target, env, **kwargs)
@@ -80,7 +86,7 @@ class IntentParser:
             intent.action = "deploy"
 
         # Extract repo URL
-        url_match = re.search(r'(https?://\S+|git@\S+)', text)
+        url_match = re.search(r"(https?://\S+|git@\S+)", text)
         if url_match:
             intent.source_repo = url_match.group(1)
 
@@ -101,7 +107,7 @@ class IntentParser:
             intent.environment = "staging"
 
         # Extract region
-        region_match = re.search(r'(us-east-\d|us-west-\d|eu-west-\d|eu-central-\d|ap-southeast-\d)', text_lower)
+        region_match = re.search(r"(us-east-\d|us-west-\d|eu-west-\d|eu-central-\d|ap-southeast-\d)", text_lower)
         if region_match:
             intent.region = region_match.group(1)
 

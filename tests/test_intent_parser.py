@@ -44,7 +44,9 @@ class TestStructuredParsing:
     def test_registry_option(self, parser):
         registry = "123456.dkr.ecr.us-east-1.amazonaws.com"
         result = parser.parse(
-            repo="https://github.com/u/a", target="ecs", registry=registry,
+            repo="https://github.com/u/a",
+            target="ecs",
+            registry=registry,
         )
         assert result["registry_url"] == registry
 

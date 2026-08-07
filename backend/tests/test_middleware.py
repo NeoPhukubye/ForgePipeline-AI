@@ -13,6 +13,7 @@ def test_health_always_open(client):
     os.environ["FORGE_API_KEY"] = "test-secret"
     try:
         import backend.app.middleware as mw
+
         mw.API_KEY = "test-secret"
 
         resp = client.get("/api/health")
@@ -24,6 +25,7 @@ def test_health_always_open(client):
 
 def test_reject_without_key(client):
     import backend.app.middleware as mw
+
     mw.API_KEY = "test-secret"
     try:
         resp = client.get("/api/projects")
@@ -35,6 +37,7 @@ def test_reject_without_key(client):
 
 def test_accept_with_header(client):
     import backend.app.middleware as mw
+
     mw.API_KEY = "test-secret"
     try:
         resp = client.get("/api/projects", headers={"X-API-Key": "test-secret"})
@@ -45,6 +48,7 @@ def test_accept_with_header(client):
 
 def test_accept_with_query_param(client):
     import backend.app.middleware as mw
+
     mw.API_KEY = "test-secret"
     try:
         resp = client.get("/api/projects?api_key=test-secret")

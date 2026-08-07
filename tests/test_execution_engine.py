@@ -1,6 +1,5 @@
 """Tests for the execution engine module."""
 
-
 from forgepipeline_ai.execution_engine import ExecutionEngine
 from forgepipeline_ai.planning_agent import DeploymentPlan, PlanStep, StepStatus
 
@@ -43,9 +42,16 @@ class TestURLValidation:
 class TestDryRun:
     def test_dry_run_does_not_execute(self):
         engine = ExecutionEngine(dry_run=True)
-        plan = DeploymentPlan(steps=[
-            PlanStep(name="clone_repo", description="Clone", handler="clone_repo", context={"repo_url": "https://github.com/user/app"}),
-        ])
+        plan = DeploymentPlan(
+            steps=[
+                PlanStep(
+                    name="clone_repo",
+                    description="Clone",
+                    handler="clone_repo",
+                    context={"repo_url": "https://github.com/user/app"},
+                ),
+            ]
+        )
         intent = {"source_repo": "https://github.com/user/app"}
         engine.execute_plan(plan, intent)
         assert plan.steps[0].status == StepStatus.COMPLETED
@@ -53,9 +59,11 @@ class TestDryRun:
     def test_dry_run_build_image(self):
         engine = ExecutionEngine(dry_run=True)
         engine.context.repo_path = "/tmp/fake"
-        plan = DeploymentPlan(steps=[
-            PlanStep(name="build_image", description="Build", handler="build_image"),
-        ])
+        plan = DeploymentPlan(
+            steps=[
+                PlanStep(name="build_image", description="Build", handler="build_image"),
+            ]
+        )
         intent = {"source_repo": "https://github.com/user/app", "environment": "staging"}
         engine.execute_plan(plan, intent)
         assert plan.steps[0].status == StepStatus.COMPLETED
@@ -87,9 +95,16 @@ class TestCallbacks:
         engine.on_step_start(lambda s: started.append(s.name))
         engine.on_step_complete(lambda s: completed.append(s.name))
 
-        plan = DeploymentPlan(steps=[
-            PlanStep(name="clone_repo", description="Clone", handler="clone_repo", context={"repo_url": "https://github.com/u/a"}),
-        ])
+        plan = DeploymentPlan(
+            steps=[
+                PlanStep(
+                    name="clone_repo",
+                    description="Clone",
+                    handler="clone_repo",
+                    context={"repo_url": "https://github.com/u/a"},
+                ),
+            ]
+        )
         engine.execute_plan(plan, {"source_repo": "https://github.com/u/a"})
         assert "clone_repo" in started
         assert "clone_repo" in completed

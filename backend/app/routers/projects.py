@@ -13,9 +13,7 @@ router = APIRouter(prefix="/projects", tags=["projects"])
 @router.get("", response_model=list[ProjectResponse])
 def list_projects():
     with get_db() as conn:
-        rows = conn.execute(
-            "SELECT * FROM projects ORDER BY updated_at DESC"
-        ).fetchall()
+        rows = conn.execute("SELECT * FROM projects ORDER BY updated_at DESC").fetchall()
     return [dict(r) for r in rows]
 
 
@@ -29,8 +27,16 @@ def create_project(body: ProjectCreate):
                 cloud_provider, deployment_target,
                 deployment_region, environment)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-            (project_id, body.name, body.description, body.source_repo_url,
-             body.cloud_provider, body.deployment_target, body.deployment_region, body.environment),
+            (
+                project_id,
+                body.name,
+                body.description,
+                body.source_repo_url,
+                body.cloud_provider,
+                body.deployment_target,
+                body.deployment_region,
+                body.environment,
+            ),
         )
         row = conn.execute("SELECT * FROM projects WHERE id = ?", (project_id,)).fetchone()
     return dict(row)

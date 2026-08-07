@@ -74,9 +74,7 @@ def update_user(user_id: str, role: str | None = None, is_active: bool | None = 
         if updates:
             updates.append("updated_at = datetime('now')")
             params.append(user_id)
-            conn.execute(
-                f"UPDATE users SET {', '.join(updates)} WHERE id = ?", params
-            )
+            conn.execute(f"UPDATE users SET {', '.join(updates)} WHERE id = ?", params)
 
         row = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
     return dict(row)

@@ -5,6 +5,7 @@ from backend.app.database import get_db
 
 def _insert_deployment(project_id: str, status: str = "LIVE"):
     import uuid
+
     dep_id = str(uuid.uuid4())
     with get_db() as conn:
         conn.execute(

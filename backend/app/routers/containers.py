@@ -30,9 +30,7 @@ def get_dashboard_stats():
             "SELECT COUNT(*) FROM tasks WHERE task_type IN ('DEPLOY', 'CONTAINERIZE')"
         ).fetchone()[0]
         total_containers = conn.execute("SELECT COUNT(*) FROM containers").fetchone()[0]
-        active_tasks = conn.execute(
-            "SELECT COUNT(*) FROM tasks WHERE status IN ('PENDING', 'RUNNING')"
-        ).fetchone()[0]
+        active_tasks = conn.execute("SELECT COUNT(*) FROM tasks WHERE status IN ('PENDING', 'RUNNING')").fetchone()[0]
         completed = conn.execute("SELECT COUNT(*) FROM tasks WHERE status = 'COMPLETED'").fetchone()[0]
         total = conn.execute("SELECT COUNT(*) FROM tasks").fetchone()[0]
         success_rate = (completed / total * 100) if total > 0 else 0.0

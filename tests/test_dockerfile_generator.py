@@ -28,7 +28,10 @@ class TestDockerfileGenerator:
 
     def test_python_poetry(self, generator):
         analysis = AnalysisResult(
-            language="python", framework="fastapi", package_manager="poetry", port=8000,
+            language="python",
+            framework="fastapi",
+            package_manager="poetry",
+            port=8000,
             start_command="uvicorn app.main:app --host 0.0.0.0",
         )
         dockerfile = generator.generate(analysis)
@@ -37,7 +40,10 @@ class TestDockerfileGenerator:
 
     def test_python_uv(self, generator):
         analysis = AnalysisResult(
-            language="python", framework="fastapi", package_manager="uv", port=8000,
+            language="python",
+            framework="fastapi",
+            package_manager="uv",
+            port=8000,
             start_command="uvicorn app.main:app",
         )
         dockerfile = generator.generate(analysis)
@@ -46,8 +52,12 @@ class TestDockerfileGenerator:
 
     def test_node_static_react_vite(self, generator):
         analysis = AnalysisResult(
-            language="typescript", framework="react-vite", package_manager="npm",
-            port=5173, static_output_dir="dist", build_command="npm run build",
+            language="typescript",
+            framework="react-vite",
+            package_manager="npm",
+            port=5173,
+            static_output_dir="dist",
+            build_command="npm run build",
         )
         dockerfile = generator.generate(analysis)
         assert "nginx" in dockerfile
@@ -56,8 +66,11 @@ class TestDockerfileGenerator:
 
     def test_node_server_express(self, generator):
         analysis = AnalysisResult(
-            language="javascript", framework="express", package_manager="npm",
-            port=3000, start_command="node server.js",
+            language="javascript",
+            framework="express",
+            package_manager="npm",
+            port=3000,
+            start_command="node server.js",
         )
         dockerfile = generator.generate(analysis)
         assert "FROM node:" in dockerfile
@@ -92,8 +105,12 @@ class TestDockerfileGenerator:
 
     def test_pnpm_lockfile(self, generator):
         analysis = AnalysisResult(
-            language="typescript", framework="nextjs", package_manager="pnpm",
-            port=3000, start_command="npm start", build_command="npm run build",
+            language="typescript",
+            framework="nextjs",
+            package_manager="pnpm",
+            port=3000,
+            start_command="npm start",
+            build_command="npm run build",
         )
         dockerfile = generator.generate(analysis)
         assert "pnpm" in dockerfile

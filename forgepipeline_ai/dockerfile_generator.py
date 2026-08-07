@@ -67,8 +67,7 @@ class DockerfileGenerator:
             "# Final stage",
             "FROM base AS runtime",
             (
-                "COPY --from=deps /usr/local/lib/python*/site-packages"
-                " /usr/local/lib/python*/site-packages"
+                "COPY --from=deps /usr/local/lib/python*/site-packages /usr/local/lib/python*/site-packages"
                 if a.package_manager != "uv"
                 else "COPY --from=deps /app/.venv /app/.venv"
             ),

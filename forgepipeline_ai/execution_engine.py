@@ -180,6 +180,7 @@ class ExecutionEngine:
         if any(c in url_stripped for c in [";", "|", "&", "$", "`", "\n", "\r"]):
             return False
         import re
+
         valid = (
             re.match(r"^https?://[\w.\-/~@:]+$", url_stripped)
             or re.match(r"^git@[\w.\-]+:[\w.\-/]+$", url_stripped)
@@ -270,18 +271,18 @@ class ExecutionEngine:
         # Generate ECS task definition JSON
         self.context.artifacts["ecs_task_def"] = {
             "family": self.context.image_name or "app",
-            "containerDefinitions": [{
-                "name": self.context.image_name or "app",
-                "image": self.context.full_image_ref,
-                "portMappings": (
-                    [{"containerPort": self.context.analysis.port or 8080}]
-                    if self.context.analysis
-                    else []
-                ),
-                "essential": True,
-                "memory": 512,
-                "cpu": 256,
-            }],
+            "containerDefinitions": [
+                {
+                    "name": self.context.image_name or "app",
+                    "image": self.context.full_image_ref,
+                    "portMappings": (
+                        [{"containerPort": self.context.analysis.port or 8080}] if self.context.analysis else []
+                    ),
+                    "essential": True,
+                    "memory": 512,
+                    "cpu": 256,
+                }
+            ],
         }
 
     def _handle_deploy_ecs(self, step: PlanStep, intent: dict):
@@ -292,12 +293,18 @@ class ExecutionEngine:
         service = self.context.image_name or "app"
 
         try:
-            self._run_cmd([
-                "aws", "ecs", "update-service",
-                "--cluster", cluster,
-                "--service", service,
-                "--force-new-deployment",
-            ])
+            self._run_cmd(
+                [
+                    "aws",
+                    "ecs",
+                    "update-service",
+                    "--cluster",
+                    cluster,
+                    "--service",
+                    service,
+                    "--force-new-deployment",
+                ]
+            )
         except subprocess.CalledProcessError as e:
             raise ExecutionError(step.name, f"ECS deployment failed: {e.stderr}")
         except FileNotFoundError:
@@ -312,12 +319,19 @@ class ExecutionEngine:
             raise ExecutionError(step.name, "No image available for deployment", recoverable=False)
 
         try:
-            self._run_cmd([
-                "gcloud", "run", "deploy", service,
-                "--image", image,
-                "--platform", "managed",
-                "--allow-unauthenticated",
-            ])
+            self._run_cmd(
+                [
+                    "gcloud",
+                    "run",
+                    "deploy",
+                    service,
+                    "--image",
+                    image,
+                    "--platform",
+                    "managed",
+                    "--allow-unauthenticated",
+                ]
+            )
         except subprocess.CalledProcessError as e:
             raise ExecutionError(step.name, f"Cloud Run deploy failed: {e.stderr}")
 
@@ -331,11 +345,17 @@ class ExecutionEngine:
             return
         func_name = self.context.image_name or "app"
         try:
-            self._run_cmd([
-                "aws", "lambda", "update-function-code",
-                "--function-name", func_name,
-                "--zip-file", "fileb://function.zip",
-            ])
+            self._run_cmd(
+                [
+                    "aws",
+                    "lambda",
+                    "update-function-code",
+                    "--function-name",
+                    func_name,
+                    "--zip-file",
+                    "fileb://function.zip",
+                ]
+            )
         except subprocess.CalledProcessError as e:
             raise ExecutionError(step.name, f"Lambda deploy failed: {e.stderr}")
 
@@ -412,11 +432,17 @@ spec:
             raise ExecutionError(step.name, "No image available")
 
         try:
-            self._run_cmd([
-                "az", "containerapp", "update",
-                "--name", name,
-                "--image", image,
-            ])
+            self._run_cmd(
+                [
+                    "az",
+                    "containerapp",
+                    "update",
+                    "--name",
+                    name,
+                    "--image",
+                    image,
+                ]
+            )
         except subprocess.CalledProcessError as e:
             raise ExecutionError(step.name, f"Azure deploy failed: {e.stderr}")
 
@@ -431,6 +457,7 @@ spec:
             return
 
         import urllib.request
+
         for attempt in range(3):
             try:
                 resp = urllib.request.urlopen(url, timeout=10)

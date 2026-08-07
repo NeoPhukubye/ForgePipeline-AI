@@ -17,10 +17,13 @@ class TestListProjects:
 
 class TestCreateProject:
     def test_create_minimal(self, client):
-        resp = client.post("/api/projects", json={
-            "name": "minimal-app",
-            "source_repo_url": "https://github.com/user/app.git",
-        })
+        resp = client.post(
+            "/api/projects",
+            json={
+                "name": "minimal-app",
+                "source_repo_url": "https://github.com/user/app.git",
+            },
+        )
         assert resp.status_code == 201
         data = resp.json()
         assert data["name"] == "minimal-app"
@@ -28,14 +31,17 @@ class TestCreateProject:
         assert data["id"]
 
     def test_create_full(self, client):
-        resp = client.post("/api/projects", json={
-            "name": "full-app",
-            "source_repo_url": "https://github.com/user/app.git",
-            "cloud_provider": "gcp",
-            "deployment_target": "gcp-run",
-            "deployment_region": "us-central1",
-            "environment": "production",
-        })
+        resp = client.post(
+            "/api/projects",
+            json={
+                "name": "full-app",
+                "source_repo_url": "https://github.com/user/app.git",
+                "cloud_provider": "gcp",
+                "deployment_target": "gcp-run",
+                "deployment_region": "us-central1",
+                "environment": "production",
+            },
+        )
         assert resp.status_code == 201
         data = resp.json()
         assert data["cloud_provider"] == "gcp"
