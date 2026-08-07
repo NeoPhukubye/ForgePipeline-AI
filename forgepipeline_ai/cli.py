@@ -182,7 +182,9 @@ def analyze(
 @app.command()
 def generate(
     path: Annotated[str, typer.Argument(help="Path to repository or project directory.")] = ".",
-    output: Annotated[Optional[str], typer.Option("--output", "-o", help="Write Dockerfile to path (default: stdout).")] = None,
+    output: Annotated[Optional[str], typer.Option(
+        "--output", "-o", help="Write Dockerfile to path (default: stdout).",
+    )] = None,
 ):
     """Generate a Dockerfile for the given project."""
     analyzer = CodeAnalyzer()
