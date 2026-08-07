@@ -67,7 +67,9 @@ def _run_pipeline(task_id: str, project_id: str, task_type: str, dry_run: bool):
                 target=project.get("deployment_target") or "aws-ecs",
                 env=project.get("environment") or "staging",
             )
-            _log(conn, task_id, "INFO", f"Intent parsed: {intent.get('action', 'deploy')} to {intent.get('target_platform', 'unknown')}")
+            action = intent.get("action", "deploy")
+            platform = intent.get("target_platform", "unknown")
+            _log(conn, task_id, "INFO", f"Intent parsed: {action} to {platform}")
 
             # Create plan
             planner = PlanningAgent()
