@@ -273,7 +273,11 @@ class ExecutionEngine:
             "containerDefinitions": [{
                 "name": self.context.image_name or "app",
                 "image": self.context.full_image_ref,
-                "portMappings": [{"containerPort": self.context.analysis.port or 8080}] if self.context.analysis else [],
+                "portMappings": (
+                    [{"containerPort": self.context.analysis.port or 8080}]
+                    if self.context.analysis
+                    else []
+                ),
                 "essential": True,
                 "memory": 512,
                 "cpu": 256,

@@ -42,8 +42,11 @@ class TestStructuredParsing:
         assert "no_docker" not in result or result.get("no_docker") is True
 
     def test_registry_option(self, parser):
-        result = parser.parse(repo="https://github.com/u/a", target="ecs", registry="123456.dkr.ecr.us-east-1.amazonaws.com")
-        assert result["registry_url"] == "123456.dkr.ecr.us-east-1.amazonaws.com"
+        registry = "123456.dkr.ecr.us-east-1.amazonaws.com"
+        result = parser.parse(
+            repo="https://github.com/u/a", target="ecs", registry=registry,
+        )
+        assert result["registry_url"] == registry
 
 
 class TestNaturalLanguageParsing:

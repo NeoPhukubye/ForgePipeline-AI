@@ -308,7 +308,12 @@ class CodeAnalyzer:
                         continue
                     if in_services and line and not line.startswith(" ") and not line.startswith("\t"):
                         break
-                    if in_services and line.startswith("  ") and line.strip().endswith(":") and not line.startswith("    "):
+                    if (
+                        in_services
+                        and line.startswith("  ")
+                        and line.strip().endswith(":")
+                        and not line.startswith("    ")
+                    ):
                         services.append(line.strip().rstrip(":"))
                 if len(services) > 1:
                     result.multi_service = True
@@ -324,7 +329,11 @@ class CodeAnalyzer:
                 for line in req_file.read_text().splitlines():
                     line = line.strip()
                     if line and not line.startswith("#") and not line.startswith("-"):
-                        pkg = line.split("==")[0].split(">=")[0].split("<=")[0].split("~=")[0].split("[")[0].strip().lower()
+                        pkg = (
+                            line.split("==")[0].split(">=")[0]
+                            .split("<=")[0].split("~=")[0]
+                            .split("[")[0].strip().lower()
+                        )
                         if pkg:
                             deps.append(pkg)
             except IOError:

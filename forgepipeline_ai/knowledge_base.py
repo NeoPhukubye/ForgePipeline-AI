@@ -138,7 +138,12 @@ DEPLOYMENT_PATTERNS: list[DeploymentPattern] = [
         name="Canary",
         description="Route a small percentage of traffic to new version",
         when_to_use="Gradual rollout with risk mitigation",
-        steps=["Deploy new version alongside old", "Route 5% traffic", "Monitor metrics", "Gradually increase or rollback"],
+        steps=[
+            "Deploy new version alongside old",
+            "Route 5% traffic",
+            "Monitor metrics",
+            "Gradually increase or rollback",
+        ],
     ),
     DeploymentPattern(
         name="Rolling Update",

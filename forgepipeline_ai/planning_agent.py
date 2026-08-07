@@ -120,7 +120,11 @@ class PlanningAgent:
                 name="build_image",
                 description="Build Docker image",
                 handler="build_image",
-                depends_on=["generate_dockerfile"] if not (analysis and analysis.has_dockerfile) else ["validate_dockerfile"],
+                depends_on=(
+                    ["generate_dockerfile"]
+                    if not (analysis and analysis.has_dockerfile)
+                    else ["validate_dockerfile"]
+                ),
                 max_retries=1,
             ))
 
