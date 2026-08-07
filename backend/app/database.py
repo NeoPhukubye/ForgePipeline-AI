@@ -104,7 +104,11 @@ def init_db():
                 environment TEXT NOT NULL DEFAULT 'staging',
                 cloud_provider TEXT,
                 region TEXT,
-                status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'IN_PROGRESS', 'LIVE', 'ROLLED_BACK', 'FAILED')),
+                status TEXT NOT NULL DEFAULT 'PENDING'
+                    CHECK (status IN (
+                        'PENDING', 'IN_PROGRESS', 'LIVE',
+                        'ROLLED_BACK', 'FAILED'
+                    )),
                 deployed_by TEXT REFERENCES users(id),
                 deployed_at TEXT,
                 url TEXT,

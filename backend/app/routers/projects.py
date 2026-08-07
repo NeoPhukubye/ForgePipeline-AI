@@ -24,7 +24,10 @@ def create_project(body: ProjectCreate):
     project_id = str(uuid.uuid4())
     with get_db() as conn:
         conn.execute(
-            """INSERT INTO projects (id, name, description, source_repo_url, cloud_provider, deployment_target, deployment_region, environment)
+            """INSERT INTO projects
+               (id, name, description, source_repo_url,
+                cloud_provider, deployment_target,
+                deployment_region, environment)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
             (project_id, body.name, body.description, body.source_repo_url,
              body.cloud_provider, body.deployment_target, body.deployment_region, body.environment),
